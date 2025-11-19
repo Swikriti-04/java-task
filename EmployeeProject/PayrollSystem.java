@@ -6,7 +6,7 @@ import java.util.Map;
 public class PayrollSystem {
 
     private String companyName;
-    private List<Employee> employees;
+    private List<Employee> employees = new ArrayList<>();
 
 
     public PayrollSystem(String companyName) {

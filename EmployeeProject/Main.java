@@ -5,7 +5,7 @@ public class Main {
         Developer dev1 = new Developer("Swikriti Mondal", 5000, "IT", "Java", "Junior");
         dev1.completeProject(2);
 
-        Designer des1 = new Designer("Saurabh Sharma", 4000, "Design", "Figma", "UI");
+        Designer des1 = new Designer("Saurabh Kumar Sharma", 4000, "Design", "Figma", "UI");
         des1.completeDesign();
 
         Manager mgr1 = new Manager("Abhijit Sharma", 8000, "Management");
@@ -30,3 +30,4 @@ public class Main {
         System.out.println("After raise: " + dev1.getBaseSalary());
     }
 }
+
