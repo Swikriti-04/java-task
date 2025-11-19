@@ -1,7 +1,7 @@
 
 import javax.lang.model.util.ElementScanner14;
 
-public abstract class Developer extends Employee {
+public class Developer extends Employee {
 
     private String programmingLanguage;
     private int projectsCompleted;

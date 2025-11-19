@@ -1,9 +1,9 @@
-public abstract class Manager extends Employee{
+public class Manager extends Employee{
     
     private int teamSize;
     private double projectBonus=0;
     
-    public Manager(String name,double salary, String dept, int teamSize){
+    public Manager(String name,double salary, String dept){
         
         super(name,salary,dept);
         this.teamSize = teamSize;

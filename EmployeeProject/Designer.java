@@ -1,4 +1,4 @@
-public abstract class Designer extends Employee{
+public class Designer extends Employee{
 
     private String designTool;
     private int designsCompleted;

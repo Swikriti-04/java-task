@@ -61,5 +61,9 @@ public abstract class Employee{
     public String getlastName(){return lastName;}
     public double getBaseSalary(){return baseSalary;}
 
+    public void setBaseSalary(double baseSalary) {
+        this.baseSalary = baseSalary;
+    }
+
 }
 
