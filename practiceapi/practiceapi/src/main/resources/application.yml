@@ -1,0 +1,15 @@
+server:
+  port: 8080
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
+info:
+  app:
+    name: Practice API
+    description: Simple User API using Spring Boot + H2 + JPA
+    version: 1.0.0
