@@ -1,0 +1,184 @@
+openapi: 3.0.1
+info:
+  title: Cart API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /carts:
+    post:
+      summary: Create a new cart
+      operationId: createCart
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCartRequest'
+      responses:
+        '201':
+          description: Cart created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+  /carts/{cartId}:
+    get:
+      summary: Get cart by id
+      operationId: getCart
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cart found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '404':
+          description: Cart not found
+    delete:
+      summary: Delete cart
+      operationId: deleteCart
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Cart deleted
+  /carts/{cartId}/items:
+    post:
+      summary: Add item to cart
+      operationId: addItem
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddItemRequest'
+      responses:
+        '200':
+          description: Item added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+    put:
+      summary: Update item quantity
+      operationId: updateItem
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateItemRequest'
+      responses:
+        '200':
+          description: Item updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+  /carts/{cartId}/items/{itemId}:
+    delete:
+      summary: Remove item from cart
+      operationId: removeItem
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Item removed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+components:
+  schemas:
+    CreateCartRequest:
+      type: object
+      properties:
+        owner:
+          type: string
+    Cart:
+      type: object
+      properties:
+        id:
+          type: string
+        owner:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+        total:
+          type: number
+          format: double
+    CartItem:
+      type: object
+      properties:
+        id:
+          type: string
+        productId:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+          format: double
+        quantity:
+          type: integer
+    AddItemRequest:
+      type: object
+      required:
+        - productId
+        - name
+        - price
+        - quantity
+      properties:
+        productId:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+          format: double
+        quantity:
+          type: integer
+    UpdateItemRequest:
+      type: object
+      required:
+        - itemId
+        - quantity
+      properties:
+        itemId:
+          type: string
+        quantity:
+          type: integer

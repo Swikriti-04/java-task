@@ -1,0 +1,123 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.yaml:snakeyaml:2.2'
+    }
+}
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.5.8'
+	id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.openapi.generator' version '7.9.0'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+description = 'Demo project for Spring Boot'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+        // don't call force(...) here
+    }
+}
+configurations.all {
+    resolutionStrategy {
+        force 'org.yaml:snakeyaml:2.2'
+    }
+}
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('springCloudVersion', "2025.0.0")
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.apache.camel.springboot:camel-spring-boot-starter:4.15.0'
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.4'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.22'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+    implementation 'org.yaml:snakeyaml:2.2'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	runtimeOnly 'com.h2database:h2'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+
+// -------------- OpenAPI generator config --------------
+openApiGenerate {
+    generatorName = "spring"
+
+    // Use a proper file:/// URI so the OpenAPI parser accepts it on Windows:
+    inputSpec = file('api-specs/api.yaml').toURI().toString()
+
+    outputDir = file("$buildDir/generated").absolutePath
+    apiPackage = "com.example.userservice.api"
+    modelPackage = "com.example.userservice.model"
+
+    globalProperties = [
+            apis: "",
+            models: "",
+            supportingFiles: "ApiUtil.java"
+    ]
+
+    configOptions = [
+            interfaceOnly: "true",
+            useSpringBoot3: "true",
+            skipDefaultInterface: "false"
+    ]
+
+    // you can toggle this, but it's safer to keep validation enabled once refs are correct
+    validateSpec = false
+}
+
+compileJava.dependsOn tasks.openApiGenerate
+sourceSets.main.java.srcDirs += files("$buildDir/generated/src/main/java")
+
+
+
+
+
+
+/*
+ * NOTE: use resolutionStrategy.force(...) at the configuration level to pin versions.
+ * Do NOT call `force` directly inside the configuration closure (that caused your error).
+ */
+
+
+// force a specific version project-wide (if needed)
+
+
+
+
+
+
+
+
